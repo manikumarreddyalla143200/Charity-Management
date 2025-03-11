@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-IN"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Donate to verified Indian charities and make a difference">
+    <title>An Avadi Charity Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>SevaSahyog</h1>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#charities">Charities</a>
+            <a href="#contact">Contact</a>
+            <a href="#" onclick="showAuthOptionsModal()">Login</a>
+        </div>
+    </nav>
+
+    <!-- Initial Auth Options Modal -->
+    <div id="authOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthOptionsModal()">×</span>
+            <h2>Welcome</h2>
+            <button onclick="showAuthModal('login')">Login</button>
+            <button onclick="showAuthModal('signup')">Register</button>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAuthModal()">×</span>
+            <div id="loginForm">
+                <h2>Login</h2>
+                <select id="userTypeLogin">
+                    <option value="donor">Donor</option>
+                    <option value="charity">Charity Organization</option>
+                </select>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button onclick="loginUser()">Login</button>
+            </div>
+            <div id="signupForm" style="display: none;">
+                <h2>Sign Up</h2>
+                <div class="user-type-selector">
+                    <label>
+                        <input type="radio" name="userType" value="donor" checked onclick="toggleSignupForm('donor')"> Donor
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="charity" onclick="toggleSignupForm('charity')"> Charity
+                    </label>
+                </div>
+                <div id="donorSignup">
+                    <input type="text" id="donorName" placeholder="Full Name" required>
+                    <input type="email" id="donorEmail" placeholder="Email" required>
+                    <input type="password" id="donorPassword" placeholder="Password" required>
+                </div>
+                <div id="charitySignup" style="display: none;">
+                    <input type="text" id="charityName" placeholder="Organization Name" required>
+                    <input type="email" id="charityEmail" placeholder="Email" required>
+                    <input type="password" id="charityPassword" placeholder="Password" required>
+                    <input type="text" id="registrationNumber" placeholder="Registration Number" required>
+                    <textarea id="charityAddress" placeholder="Registered Address" required></textarea>
+                </div>
+                <button onclick="registerUser()">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Empowering Change in India</h2>
+            <p>Support grassroots NGOs working across India</p>
+            <button onclick="scrollToSection('charities')">Donate Now</button>
+        </div>
+    </section>
+
+    <section class="impact-stats">
+        <div class="stat-item">
+            <h3>₹0</h3>
+            <p>Raised for Causes</p>
+        </div>
+        <div class="stat-item">
+            <h3>100+</h3>
+            <p>Verified NGOs</p>
+        </div>
+        <div class="stat-item">
+            <h3>1L+</h3>
+            <p>Lives Impacted</p>
+        </div>
+    </section>
+
+    <section class="charities-section" id="charities">
+        <h2>Featured Causes</h2>
+        <div class="charities-container">
+            <div class="charity-card">
+                <div class="cause-tag education-tag">Education</div>
+                <h3>Digital Shiksha</h3>
+                <p>Providing digital education in rural India</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <p class="raised-amount">₹8.2L raised of ₹12L goal</p>
+                <button onclick="checkLoginAndDonate('Digital Shiksha')">Support Now</button>
+            </div>
+            <div class="charity-card">
+                <div class="cause-tag health-tag">Healthcare</div>
+                <h3>Mobile Health Vans</h3>
+                <p>Medical care for remote villages</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%"></div>
+                </div>
+                <p class="raised-amount">₹15L raised of ₹18L goal</p>
+                <button onclick="checkLoginAndDonate('Mobile Health Vans')">Support Now</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="about">
+        <h2>How SevaSahyog Works</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Choose a Cause</h3>
+                <p>Select from 50+ verified NGOs across India</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Transparent Donation</h3>
+                <p>Contribute any amount starting from ₹100</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Track Impact</h3>
+                <p>Receive updates on how your donation is used</p>
+            </div>
+        </div>
+    </section>
+
+    <form class="donation-form" id="donationForm" style="display: none;">
+        <h2>Donate to <span id="charityName"></span></h2>
+        <div class="amount-selector">
+            <button type="button" class="amount-option" onclick="setAmount(500)">₹500</button>
+            <button type="button" class="amount-option" onclick="setAmount(1000)">₹1000</button>
+            <button type="button" class="amount-option" onclick="setAmount(2000)">₹2000</button>
+            <input type="number" placeholder="Other Amount (₹)" id="amount" required>
+        </div>
+        <select id="frequency">
+            <option value="one-time">One-time</option>
+            <option value="monthly">Monthly</option>
+        </select>
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <button type="submit">Donate Now</button>
+    </form>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>Avadi Charitable Trust is a registered non-profit platform connecting donors with verified Indian charities.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: contact@sevasahyog.in<br>Phone: +91 98765 43210</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 SevaSahyog. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
